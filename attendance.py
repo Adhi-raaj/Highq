@@ -41,3 +41,16 @@ while True:
 
     # Display the webcam feed with rectangles
     cv2.imshow('Webcam', img)
+# ✅ If attendance was marked, wait for 5 seconds and then exit
+    if attendance_marked:
+        print("✅ Face detected! Closing in 5 seconds...")
+        cv2.waitKey(5000)
+        break
+
+    # ✅ Allow manual exit by pressing 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# ✅ Release resources after finishing
+cap.release()
+cv2.destroyAllWindows()
