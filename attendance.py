@@ -18,3 +18,26 @@ def markAttendance(name):
         df = pd.concat([df, pd.DataFrame([[name, dtString]], columns=['Name', 'Time'])], ignore_index=True)
         df.to_csv(csv_path, index=False)
         print(f'✅ Attendance marked for {name} at {dtString}')
+#webcam start code
+cap = cv2.VideoCapture(0)
+attendance_marked = False  # Flag to check if attendance is already marked
+
+while True:
+    # Read frame from webcam
+    success, img = cap.read()
+    # Convert to grayscale for face detection
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # Detect faces in the frame
+    faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+
+    for (x, y, w, h) in faces:
+        # Draw rectangle around the detected face
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 255), 2)
+        # Put name text above the rectangle
+        cv2.putText(img, "Akshat", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        # Mark attendance for the detected face
+        markAttendance("Akshat")
+        attendance_marked = True  # Update flag to true
+
+    # Display the webcam feed with rectangles
+    cv2.imshow('Webcam', img)
